@@ -21,7 +21,7 @@ class ProductController extends Controller
         $query = \request('query');
         $products = Product::orderBy($sort, $desc);
         if ($query) {
-            $products->where('title', '%' . $query . '%');
+            $products->whereRaw('UPPER(title) LIKE ?', ['%' . strtoupper($query) . '%']);
         }
         return $products->paginate($per_page);
     }
@@ -40,8 +40,9 @@ class ProductController extends Controller
         ];
         $this->validate($request, $rules);
         $data = $request->all();
+        unset($data['image']);
         if ($request->hasFile('image')) {
-            $data['photo'] = $request->file('image')->store('public/images');
+            $data['image'] = str_replace('public/storage/', '', $request->file('image')->store('public/storage/images'));
         }
         $product = Product::create($data);
         return response($product);
@@ -68,11 +69,12 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $data = $request->all();
+        unset($data['image']);
         if ($request->hasFile('image')) {
             if ($product->getAttributes()['image']) {
                 Storage::delete($product->getAttributes()['image']);
             }
-            $data['photo'] = $request->file('image')->store('public/images');
+            $data['image'] = str_replace('public/storage/', '', $request->file('image')->store('public/storage/images'));
         }
         $product->update($data);
         return response($product);

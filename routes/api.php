@@ -18,7 +18,8 @@ Route::middleware(['api'])->group(function () {
     Route::post('register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
     Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
 });
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['api', 'auth:api'])->group(function () {
     Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
     Route::get('user', [\App\Http\Controllers\AuthController::class, 'user'])->name('user');
+    Route::resource('products', \App\Http\Controllers\ProductController::class);
 });

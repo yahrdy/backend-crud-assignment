@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 class ProductFactory extends Factory
 {
@@ -22,7 +23,10 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->text,
+            'price' => $this->faker->numberBetween(50, 500),
+            'image' => str_replace('public/', '', Storage::putFile('public/images', $this->faker->image())),
         ];
     }
 }
