@@ -20,7 +20,7 @@ composer install
 php artisan key:generate
 ```
 
-### Rename `.env.example` file to `.env` and update your environment variables
+### Copy or rename `.env.example` file to `.env` and update your environment variables
 
 ```
 APP_NAME='Your app name'
@@ -30,7 +30,7 @@ DB_USERNAME='Your database username'
 DB_PASSWORD='Your database password'
 ```
 
-### Make symlink for uploading and viewing image publicly
+### Make symlink for uploading and viewing files publicly
 
 ```
 php artisan storage:link
